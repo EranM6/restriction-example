@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  api-server:
+    container_name: api-server
+    build: .
+    image: api-server:latest
+    expose:
+      - "8080"
+    restart: unless-stopped
+    networks:
+      - restriction-example
+  router:
+    container_name: api-router
+    image: nginx:latest
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+    ports:
+      - "9443:80"
+      - "9090:9090"
+    restart: unless-stopped
+    networks:
+      - restriction-example
+
+networks:
+  restriction-example:
+    driver: bridge
+
